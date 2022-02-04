@@ -26,7 +26,7 @@ class ExampleController extends Controller
     {
 
         $result=DB::table('users')->insert(
-            ["id" => "1b7161ea8542462dbf21db4ca9e66288",
+            ["id" => "2",
                 'name' => 'sam',
                 'email' => 'sam@mail.com',
                 'password' => Hash::make("sam1"),
