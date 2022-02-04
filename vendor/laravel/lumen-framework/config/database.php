@@ -55,7 +55,7 @@ return [
             'strict' => env('DB_STRICT_MODE', true),
             'engine' => env('DB_ENGINE', null),
             'timezone' => env('DB_TIMEZONE', '+00:00'),
-			'sslmode' => env('DB_SSLMODE', 'prefer'),
+			'sslmode' => env('DB_SSLMODE', 'required'),
 			'options' => (env('MYSQL_SSL')) ? [ PDO::MYSQL_ATTR_SSL_KEY => '/ssl/BaltimoreCyberTrustRoot.crt.pem', ] : []
         ],
 
