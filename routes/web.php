@@ -20,15 +20,16 @@ $router->get('/', function () use ($router) {
 
 $router->post('/save', 'ExampleController@save');
 $router->group( ['middleware' => 'auth'], function() use ($router) {
+	$router->get('/user/profile', function () {
+        echo 'Nancy123';
+    });
 
 });
 $router->group( ['middleware' => 'auth:mgt_api'], function() use ($router) {
     $router->get('/test', 'ExampleController@test');
     $router->get('/userinfo', 'ExampleController@userinfo');
     $router->post('/create_order', 'ExampleController@create_order');
-    $router->get('/user/profile', function () {
-        echo 'Nancy';
-    });
+    
 
 });
 
