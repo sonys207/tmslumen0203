@@ -79,8 +79,6 @@ class AuthManager implements FactoryContract
     protected function resolve($name)
     {
         $config = $this->getConfig($name);
-		dd($name);
-        dd($config);
         if (is_null($config)) {
             throw new InvalidArgumentException("Auth guard [{$name}] is not defined.");
         }
