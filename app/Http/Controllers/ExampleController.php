@@ -51,7 +51,7 @@ class ExampleController extends Controller
 
     public function userinfo(Request $Request)
     {
-	  dd(DB::connection()->getPdo());	
+	 // dd(DB::connection()->getPdo());	
       error_log('Some message here.');
       return User::all();
     }
