@@ -56,12 +56,9 @@ return [
             'engine' => env('DB_ENGINE', null),
             'timezone' => env('DB_TIMEZONE', '+00:00'),
 			'sslmode' => env('DB_SSLMODE', 'prefer'),
-		   // 'options'   => array(
-             //   PDO::MYSQL_ATTR_SSL_CA => base_path('ssl/DigiCertGlobalRootCA.crt.pem')
-           // ),
-              'options'   => array(
-                PDO::MYSQL_ATTR_SSL_KEY => ''
-            ),		   
+		    'options'   => array(
+                PDO::MYSQL_ATTR_SSL_CA => base_path('ssl/DigiCertGlobalRootCA.crt.pem')
+            ),     		   
         ],
 
         'pgsql' => [
