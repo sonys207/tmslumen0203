@@ -53,7 +53,9 @@ class ExampleController extends Controller
     {
 	 // dd(DB::connection()->getPdo());	
      error_log('API Error:Some message here.');
-      error_log('order_info:10000001.',3,'/tmp/trace.log');
+     
+     $file_path1 = base_path().'\tmp\trace.log';
+     error_log("order_info:10000015.\r\n",3,$file_path1);
       return User::all();
     }
 
