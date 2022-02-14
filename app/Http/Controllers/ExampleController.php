@@ -53,7 +53,7 @@ class ExampleController extends Controller
     {
 	 // dd(DB::connection()->getPdo());	
      error_log('API Error:Some message here.');
-      error_log('Some message here.');
+      error_log('order_info:10000001.',3,'/tmp/trace.log');
       return User::all();
     }
 
