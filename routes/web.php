@@ -30,7 +30,7 @@ $router->group( ['middleware' => 'auth:mgt_api'], function() use ($router) {
     $router->get('/userinfo', 'ExampleController@userinfo');
     $router->post('/create_order', 'ExampleController@create_order');
     $router->get('/tms', function () {
-        echo 'hello google0208';
+        return 'hello google0208';
     });
 
 });
