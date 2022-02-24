@@ -43,11 +43,17 @@ class ExampleController extends Controller
             'client_id' => '238843d9-cecd-4a6e-82c7-84f93a7d96fe',
             'client_secret' => '3MC7Q~CLkWv4SyqYrXn6H6s4rkZ6JJwfqJZBn',
             'grant_type' => 'client_credentials',
-            'Scope' => 'https://vault.azure.net/.default'
+            //方案1
+           // 'Scope' => 'https://vault.azure.net/.default'
+            //方案2
+            'resource' => 'https://vault.azure.net'
         );
         $ch = curl_init();
         //e13d0b7a-a128-47ce-81a8-9e7d3daf0e94为app registration中的 (tenant) ID
-        curl_setopt($ch, CURLOPT_URL,"https://login.microsoftonline.com/e13d0b7a-a128-47ce-81a8-9e7d3daf0e94/oauth2/v2.0/token");
+        //方案1
+        //curl_setopt($ch, CURLOPT_URL,"https://login.microsoftonline.com/e13d0b7a-a128-47ce-81a8-9e7d3daf0e94/oauth2/v2.0/token");
+        //方案2
+        curl_setopt($ch, CURLOPT_URL,"https://login.microsoftonline.com/e13d0b7a-a128-47ce-81a8-9e7d3daf0e94/oauth2/token");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postData); 
         $json_response_data = curl_exec($ch);
@@ -60,40 +66,73 @@ class ExampleController extends Controller
         //---Get access token End---
 
 
+
         //---Get data Encyption Start
         $cURL = curl_init();
-        $str = 'I like to live in Markham';
-       
+        $str = 'I like to live in Markham!!!';
+        //encode待加密数据
         $strenconde = base64_encode($str);
-        $header=[
+        //header格式参考 https://stackoverflow.com/questions/8115683/php-curl-custom-headers
+        $header=array(
+           'Content-Type:application/json',
+            'Authorization:bearer '.$access_token   
+        );
+        /*header1这种键值对格式，curl不接受！！！
+        $header1=array(
             'Content-Type'=>'application/json',
-            'Authorization'=>'Bearer '.$access_token,
-            'Cache-Control'=>'no-cache'
-        ];
-        print_r($header);
+             'Authorization'=>'bearer '.$access_token   
+         );*/  
         $postdata2 = [
             'alg'=>'RSA-OAEP-256',
             'value'=>$strenconde
         ];
-        print_r($postdata2);
+        //转换为json格式
+        $postdatajson = json_encode($postdata2);
         curl_setopt($cURL, CURLOPT_URL, "https://keyvalut0222.vault.azure.net/keys/RSAKEY202222/8ab185785de54ca1bba657482d908ad8/encrypt?api-version=7.2");
-        //curl_setopt($cURL, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($cURL, CURLOPT_HTTPHEADER, $header);
-        curl_setopt($cURL, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($cURL, CURLOPT_POSTFIELDS, $postdata2); 
+        curl_setopt($cURL, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($cURL, CURLOPT_HTTPHEADER, $header); 
+        curl_setopt($cURL, CURLOPT_POSTFIELDS, $postdatajson);
         curl_setopt($cURL, CURLOPT_POST, true);
         $json_response_data1 = curl_exec($cURL);
         curl_close($cURL);
-        print_r($json_response_data1);
+        print_r("             result is ".json_decode($json_response_data1, true)['value']);
+        // 实际业务场景：$valueEncyption保存到数据库
+        $valueEncyption=json_decode($json_response_data1, true)['value'];
         //---Get data Encyption End
-        dd(1234456);
+      
 
 
-
-        $str1 = 'SSBsb3ZlIHRvbnk';
-        echo base64_decode($str1);
-
+       //---Get data Decyption Start
+        $cURL = curl_init();
         
+        //解密需要重新申请access token
+        $header=array(
+            'Content-Type:application/json',
+             'Authorization:bearer '.$access_token   
+         );
+        //实际业务场景： 从数据库中取出$valueEncyption
+         $postdata3 = [
+            'alg'=>'RSA-OAEP-256',
+            'value'=>$valueEncyption
+        ];
+        //转换为json格式
+        $postdatajson = json_encode($postdata3);
+        curl_setopt($cURL, CURLOPT_URL, "https://keyvalut0222.vault.azure.net/keys/RSAKEY202222/8ab185785de54ca1bba657482d908ad8/decrypt?api-version=7.2");
+        curl_setopt($cURL, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($cURL, CURLOPT_HTTPHEADER, $header); 
+        curl_setopt($cURL, CURLOPT_POSTFIELDS, $postdatajson);
+        curl_setopt($cURL, CURLOPT_POST, true);
+        $json_response_data2 = curl_exec($cURL);
+        curl_close($cURL);
+        $valueDecyption=json_decode($json_response_data2, true)['value'];
+        //decode解密后的数据
+        dd(base64_decode($valueDecyption));
+        //---Get data Decyption End
+        
+
+
+
+
        // $user = $Request->user();
         $user = Auth::user();
       //  $mgt_uid = app()->make('CSAuth')->getCS($uid)->mgt_uid;
