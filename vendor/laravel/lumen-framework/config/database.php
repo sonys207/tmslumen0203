@@ -57,7 +57,10 @@ return [
             'timezone' => env('DB_TIMEZONE', '+00:00'),
 			'sslmode' => env('DB_SSLMODE', 'prefer'),
 		    'options'   => array(
-                PDO::MYSQL_ATTR_SSL_CA => base_path('ssl/DigiCertGlobalRootCA.crt.pem')
+         
+               PDO::MYSQL_ATTR_SSL_CA => base_path('ssl/DigiCertGlobalRootCA.crt.pem')
+               // PDO::MYSQL_ATTR_SSL_KEY有bug，不提供正确的文件也可以连接mysql！！！
+              //  PDO::MYSQL_ATTR_SSL_KEY => base_path('DiCA.crt.pem')
             ),     		   
         ],
 
