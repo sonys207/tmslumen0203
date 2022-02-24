@@ -80,7 +80,7 @@ class ExampleController extends Controller
         //curl_setopt($cURL, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($cURL, CURLOPT_HTTPHEADER, $header);
         curl_setopt($cURL, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($cURL, CURLOPT_POSTFIELDS, $postData2); 
+        curl_setopt($cURL, CURLOPT_POSTFIELDS, $postdata2); 
         curl_setopt($cURL, CURLOPT_POST, true);
         $json_response_data1 = curl_exec($cURL);
         curl_close($cURL);
