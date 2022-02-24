@@ -79,7 +79,7 @@ class ExampleController extends Controller
         curl_setopt($cURL, CURLOPT_URL, "https://keyvalut0222.vault.azure.net/keys/RSAKEY202222/8ab185785de54ca1bba657482d908ad8/encrypt?api-version=7.2");
         //curl_setopt($cURL, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($cURL, CURLOPT_HTTPHEADER, $header);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($cURL, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($cURL, CURLOPT_POSTFIELDS, $postData2); 
         curl_setopt($cURL, CURLOPT_POST, true);
         $json_response_data1 = curl_exec($cURL);
