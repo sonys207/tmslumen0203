@@ -69,19 +69,19 @@ class ExampleController extends Controller
 
         //---Get data Encyption Start
         $cURL = curl_init();
-        $str = 'I like to live in Markham!!!';
+        $str = 'I like to live in Markham!!! Six Chicken';
         //encode待加密数据
         $strenconde = base64_encode($str);
         //header格式参考 https://stackoverflow.com/questions/8115683/php-curl-custom-headers
-        $header=array(
+      /*  $header=array(
            'Content-Type:application/json',
             'Authorization:bearer '.$access_token   
-        );
-        /*header1这种键值对格式，curl不接受！！！
+        );*/
+       // header1这种键值对格式，curl不接受！！！
         $header1=array(
             'Content-Type'=>'application/json',
              'Authorization'=>'bearer '.$access_token   
-         );*/  
+         );
         $postdata2 = [
             'alg'=>'RSA-OAEP-256',
             'value'=>$strenconde
@@ -90,7 +90,7 @@ class ExampleController extends Controller
         $postdatajson = json_encode($postdata2);
         curl_setopt($cURL, CURLOPT_URL, "https://keyvalut0222.vault.azure.net/keys/RSAKEY202222/8ab185785de54ca1bba657482d908ad8/encrypt?api-version=7.2");
         curl_setopt($cURL, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($cURL, CURLOPT_HTTPHEADER, $header); 
+        curl_setopt($cURL, CURLOPT_HTTPHEADER, $header1); 
         curl_setopt($cURL, CURLOPT_POSTFIELDS, $postdatajson);
         curl_setopt($cURL, CURLOPT_POST, true);
         $json_response_data1 = curl_exec($cURL);
@@ -110,6 +110,11 @@ class ExampleController extends Controller
             'Content-Type:application/json',
              'Authorization:bearer '.$access_token   
          );
+          /*header1这种键值对格式，curl不接受！！！
+        $header1=array(
+            'Content-Type'=>'application/json',
+             'Authorization'=>'bearer '.$access_token   
+         );*/  
         //实际业务场景： 从数据库中取出$valueEncyption
          $postdata3 = [
             'alg'=>'RSA-OAEP-256',
